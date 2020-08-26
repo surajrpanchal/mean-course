@@ -9,13 +9,8 @@ import { Title } from '@angular/platform-browser';
 })
 export class AppComponent {
   title = 'mean-course';
-  storedPosts: Post[] = [];
 
   constructor(private titleService: Title) {
     this.titleService.setTitle(this.title);
-  }
-
-  onPostAdded(post: Post): void {
-    this.storedPosts.push(post);
   }
 }
