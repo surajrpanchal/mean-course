@@ -4,7 +4,7 @@
     <p>{{post.content}}</p>
     <mat-action-row>
       <button mat-button mat-raised-button color="accent">Edit</button>
-      <button mat-button mat-raised-button color="warn">Delete</button>
+      <button mat-button mat-raised-button color="warn" (click)="deletePost(post)">Delete</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>

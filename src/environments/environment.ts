@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   ApiBasePath:'http://localhost:3000',
   PostGetApi: '/api/posts',
-  PostSaveApi:'/api/posts'
+  PostSaveApi:'/api/posts',
+  PostDeleteApi:'/api/posts'
 };
 
 /*
