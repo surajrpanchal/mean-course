@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 export class PostService {
   private posts: Post[] = [];
   private postUpdate = new Subject<Post[]>();
+  private post: Post = { title: '', content: '' };
 
   constructor(private httpClient: HttpClient) {}
 
@@ -62,6 +63,23 @@ export class PostService {
       });
   }
 
+  updatePost(id: string, title: string, content: string): void {
+    const post: Post = { id: id, title: title, content: content };
+    this.httpClient
+      .put<{ isSuccess: boolean; message: string; _id: string }>(
+        environment.ApiBasePath + environment.PostUpdateApi + '/' + id,
+        post
+      )
+      .subscribe(({ isSuccess, message }) => {
+        if (isSuccess) {
+
+          this.postUpdate.next([...this.posts]);
+        } else {
+          console.warn(message);
+        }
+      });
+  }
+
   deletePost(id: string): void {
     this.httpClient
       .delete<{ isSuccess: boolean; message: string }>(
@@ -75,5 +93,11 @@ export class PostService {
           console.warn(message);
         }
       });
+  }
+
+  getPost(id: String) {
+    return this.httpClient.get<{ message: string; post: Post }>(
+      environment.ApiBasePath + environment.PostGetByIdApi + '/' + id
+    );
   }
 }

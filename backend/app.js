@@ -2,11 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const Post = require("./models/post");
+const { Console } = require("console");
 
 const app = express();
 mongoose
   .connect(
-    "mongodb+srv://surajrpanchal:QgwzbRFaSTga3hdu@mean-applicaion-cluster.pjo7i.mongodb.net/mean?retryWrites=true&w=majority",
+    "",
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
@@ -43,7 +44,27 @@ app.post("/api/posts", (req, res) => {
       res.status(201).json({
         isSuccess: true,
         message: "posts saved successfully",
-        _id: document._id
+        _id: document._id,
+      });
+    })
+    .catch(() => {
+      res.status(500).json({
+        isSuccess: false,
+        message: "while saving post error has been encountered",
+      });
+    });
+});
+
+app.put("/api/posts/:id", (req, res) => {
+  const post = new Post({
+    title: req.body.title,
+    content: req.body.content,
+  });
+  Post.updateOne({ _id: req.params.id }, post)
+    .then((document) => {
+      res.status(201).json({
+        isSuccess: true,
+        message: "posts saved successfully",
       });
     })
     .catch(() => {
@@ -61,6 +82,22 @@ app.get("/api/posts", (req, res, next) => {
         message: "Posts fetched successfully",
         count: documents.length,
         posts: documents,
+      });
+    })
+    .catch(() => {
+      res.status(500).json({
+        isSuccess: false,
+        message: "while fetching post error has been encountered",
+      });
+    });
+});
+
+app.get("/api/post/:id", (req, res, next) => {
+  Post.findOne({ _id: req.params.id })
+    .then((document) => {
+      res.status(200).json({
+        message: "Posts fetched successfully",
+        post: document,
       });
     })
     .catch(() => {

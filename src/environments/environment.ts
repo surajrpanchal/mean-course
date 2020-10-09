@@ -7,7 +7,9 @@ export const environment = {
   ApiBasePath:'http://localhost:3000',
   PostGetApi: '/api/posts',
   PostSaveApi:'/api/posts',
-  PostDeleteApi:'/api/posts'
+  PostDeleteApi:'/api/posts',
+  PostGetByIdApi:'/api/post',
+  PostUpdateApi:'/api/posts',
 };
 
 /*
