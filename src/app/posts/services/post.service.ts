@@ -72,7 +72,10 @@ export class PostService {
       )
       .subscribe(({ isSuccess, message }) => {
         if (isSuccess) {
-
+          const updatedPosts = [...this.posts];
+          const oldPostIndex = updatedPosts.findIndex((f) => f.id === post.id);
+          updatedPosts[oldPostIndex] = post;
+          this.posts = updatedPosts;
           this.postUpdate.next([...this.posts]);
         } else {
           console.warn(message);

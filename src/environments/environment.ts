@@ -8,7 +8,7 @@ export const environment = {
   PostGetApi: '/api/posts',
   PostSaveApi:'/api/posts',
   PostDeleteApi:'/api/posts',
-  PostGetByIdApi:'/api/post',
+  PostGetByIdApi:'/api/posts',
   PostUpdateApi:'/api/posts',
 };
 

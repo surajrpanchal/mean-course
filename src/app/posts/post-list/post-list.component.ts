@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   private postSubscriptions: Subscription;
+  public loadSpinner: boolean = true;
 
   constructor(public postService: PostService) {}
 
@@ -19,6 +20,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.postSubscriptions = this.postService
       .postUpdateListeners()
       .subscribe((posts: Post[]) => (this.posts = posts));
+    this.loadSpinner = false;
   }
 
   ngOnDestroy(): void {
@@ -26,7 +28,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   deletePost(post: Post): void {
-    debugger;
+    this.loadSpinner = true;
     this.postService.deletePost(post.id);
+    this.loadSpinner = false;
   }
 }

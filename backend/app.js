@@ -1,13 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const Post = require("./models/post");
-const { Console } = require("console");
+const postRouter = require("./routers/posts");
 
 const app = express();
+
 mongoose
   .connect(
-    "",
+    "mongodb+srv://surajrpanchal:QgwzbRFaSTga3hdu@mean-applicaion-cluster.pjo7i.mongodb.net/mean",
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
@@ -28,100 +28,11 @@ app.use((req, res, next) => {
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, DELETE, OPTIONS"
+    "GET, POST, PATCH, PUT, DELETE, OPTIONS"
   );
   next();
 });
 
-app.post("/api/posts", (req, res) => {
-  const post = new Post({
-    title: req.body.title,
-    content: req.body.content,
-  });
-  post
-    .save()
-    .then((document) => {
-      res.status(201).json({
-        isSuccess: true,
-        message: "posts saved successfully",
-        _id: document._id,
-      });
-    })
-    .catch(() => {
-      res.status(500).json({
-        isSuccess: false,
-        message: "while saving post error has been encountered",
-      });
-    });
-});
-
-app.put("/api/posts/:id", (req, res) => {
-  const post = new Post({
-    title: req.body.title,
-    content: req.body.content,
-  });
-  Post.updateOne({ _id: req.params.id }, post)
-    .then((document) => {
-      res.status(201).json({
-        isSuccess: true,
-        message: "posts saved successfully",
-      });
-    })
-    .catch(() => {
-      res.status(500).json({
-        isSuccess: false,
-        message: "while saving post error has been encountered",
-      });
-    });
-});
-
-app.get("/api/posts", (req, res, next) => {
-  Post.find()
-    .then((documents) => {
-      res.status(200).json({
-        message: "Posts fetched successfully",
-        count: documents.length,
-        posts: documents,
-      });
-    })
-    .catch(() => {
-      res.status(500).json({
-        isSuccess: false,
-        message: "while fetching post error has been encountered",
-      });
-    });
-});
-
-app.get("/api/post/:id", (req, res, next) => {
-  Post.findOne({ _id: req.params.id })
-    .then((document) => {
-      res.status(200).json({
-        message: "Posts fetched successfully",
-        post: document,
-      });
-    })
-    .catch(() => {
-      res.status(500).json({
-        isSuccess: false,
-        message: "while fetching post error has been encountered",
-      });
-    });
-});
-
-app.delete("/api/posts/:id", (req, res, next) => {
-  Post.deleteOne({ _id: req.params.id })
-    .then((documents) => {
-      res.status(200).json({
-        isSuccess: true,
-        message: "Posts deleted successfully",
-      });
-    })
-    .catch(() => {
-      res.status(500).json({
-        isSuccess: false,
-        message: "while deleting post error has been encountered",
-      });
-    });
-});
+app.use("/api/posts", postRouter);
 
 module.exports = app;

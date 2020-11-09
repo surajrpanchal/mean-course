@@ -1,5 +1,7 @@
 <mat-card>
-  <form (submit)="addPost(postForm)" #postForm="ngForm">
+  <mat-spinner color="warn" *ngIf="loadSpinner">
+  </mat-spinner>
+  <form (submit)="addPost(postForm)" #postForm="ngForm" *ngIf="!loadSpinner">
     <mat-form-field>
       <input
         matInput
@@ -25,9 +27,7 @@
       <mat-error *ngIf="content.invalid">Please Enter post content</mat-error>
     </mat-form-field>
     <hr />
-    <button type="submit" mat-raised-button color="primary">
-      Save Post
-    </button>
+    <button type="submit" mat-raised-button color="primary">Save Post</button>
     <p>{{ message }}</p>
   </form>
 </mat-card>

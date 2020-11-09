@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Post } from '../models/post.model';
 import { NgForm } from '@angular/forms';
 import { PostService } from '../services/post.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-create',
@@ -14,10 +14,12 @@ export class PostCreateComponent implements OnInit {
   public post: Post = { title: '', content: '' };
   private mode: String = 'Create';
   private postId: string;
+  public loadSpinner: boolean = true;
 
   constructor(
     private postService: PostService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -28,18 +30,19 @@ export class PostCreateComponent implements OnInit {
         this.postService.getPost(this.postId).subscribe(({ message, post }) => {
           this.post = post;
         });
-        console.log(this.post);
       } else {
         this.mode = 'Create';
         this.postId = null;
         this.post = { title: '', content: '' };
       }
+      this.loadSpinner = false;
     });
   }
 
   addPost(form: NgForm): void {
     if (form.valid) {
-      if (this.post.id === null) {
+      this.loadSpinner = true;
+      if (this.mode == 'Create') {
         this.postService.addPost(form.value.title, form.value.content);
         form.resetForm();
         this.message = this.post.title + ' saved successfully';
@@ -52,6 +55,8 @@ export class PostCreateComponent implements OnInit {
         form.resetForm();
         this.message = this.post.title + ' updated successfully';
       }
+      this.loadSpinner = false;
+      this.router.navigate(['/']);
     }
   }
 }
