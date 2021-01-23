@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -8,13 +9,19 @@ import { NgForm } from '@angular/forms';
 })
 export class SignupComponent implements OnInit {
   public loadSpinner: boolean = true;
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadSpinner = false;
   }
 
-  onLogin(form: NgForm): void {
-
+  onSignup(form: NgForm): void {
+    if (form.invalid) {
+      return;
+    } else {
+      this.loadSpinner = true;
+      this.authService.createUser(form.value.email, form.value.password);
+      this.loadSpinner = false;
+    }
   }
 }

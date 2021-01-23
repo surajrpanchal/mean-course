@@ -1,9 +1,10 @@
 const express = require("express");
 const Post = require("../models/post");
+const validateToken = require("../middleware/authentication-validator");
 
 const postRouter = express.Router();
 
-postRouter.post("", (req, res) => {
+postRouter.post("", validateToken, (req, res) => {
   const post = new Post({
     title: req.body.title,
     content: req.body.content,
@@ -25,7 +26,7 @@ postRouter.post("", (req, res) => {
     });
 });
 
-postRouter.put("/:id", (req, res) => {
+postRouter.put("/:id", validateToken, (req, res) => {
   const post = new Post({
     _id: req.params.id,
     title: req.body.title,
@@ -79,7 +80,7 @@ postRouter.get("/:id", (req, res, next) => {
     });
 });
 
-postRouter.delete("/:id", (req, res, next) => {
+postRouter.delete("/:id", validateToken, (req, res, next) => {
   Post.deleteOne({ _id: req.params.id })
     .then((documents) => {
       res.status(200).json({

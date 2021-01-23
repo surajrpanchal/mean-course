@@ -10,6 +10,8 @@ export const environment = {
   PostDeleteApi:'/api/posts',
   PostGetByIdApi:'/api/posts',
   PostUpdateApi:'/api/posts',
+  UserSignup: '/api/user/signup',
+  UserLogin:'/api/user/login'
 };
 
 /*
