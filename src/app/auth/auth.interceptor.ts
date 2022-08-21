@@ -9,17 +9,20 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable()
-export class AuthInterceptorInterceptor implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(
-    request: HttpRequest<unknown>,
+    req: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     const authToken = this.authService.getToken();
-    const authRequest = req.clone({
-      header: request.headers.set('Authorization', 'Bearer ' + authToken),
-    });
-    return next.handle(authRequest);
+    if(authToken !== undefined){
+      const authRequest = req.clone({
+        headers: req.headers.set('Authorization', 'Bearer ' + authToken),
+      });
+      return next.handle(authRequest);
+    }
+    return next.handle(req);
   }
 }

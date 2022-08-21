@@ -17,7 +17,7 @@ import { HeaderComponent } from './header/header.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import { AuthService } from './auth/auth.service';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,7 @@ import { AuthService } from './auth/auth.service';
   ],
   providers: [
     Title,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

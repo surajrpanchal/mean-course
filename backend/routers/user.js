@@ -53,10 +53,13 @@ userRouter.post("/login", (req, res, next) => {
           "d66afd65-7291-4b2a-9f44-0d13b8649f47",
           { expiresIn: "2h" }
         );
+        var tokenexpireIn = new Date();
+        tokenexpireIn.addHours(2);
         res.status(200).json({
           isSuccess: true,
           message: "Logged in successfully",
           token: token,
+          expiresIn: tokenexpireIn.yyyymmdd(),
         });
       }
     })

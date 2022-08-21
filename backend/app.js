@@ -35,6 +35,27 @@ app.use((req, res, next) => {
   next();
 });
 
+Date.prototype.yyyymmdd = function () {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  var date = [
+    this.getFullYear(),
+    (mm > 9 ? "" : "0") + mm,
+    (dd > 9 ? "" : "0") + dd,
+  ].join("/");
+  var time = [this.getHours(), this.getMinutes(), this.getSeconds()].join(":");
+  return [date, time].join(" ");
+};
+
+Date.prototype.addHours = function (h) {
+  this.setTime(this.getTime() + h * 60 * 60 * 1000);
+  return this;
+};
+
+var date = new Date();
+date.yyyymmdd();
+
 app.get("", (req, res, next) => {
   res.status(200).json({
     isSuccess: true,
